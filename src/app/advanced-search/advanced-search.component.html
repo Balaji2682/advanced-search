@@ -1,26 +1,170 @@
 <div class="wrapper">
-  <div class="card" [@cardAnimation] [formGroup]="form">
-    <div class="top-section">
-      <input pInputText formControlName="search" placeholder="Search" class="search-input" />
-      <button pButton type="button" label="Advanced Search" class="advanced-btn"></button>
+  <div class="search-container" [@cardAnimation] [formGroup]="form">
+    <div class="search-bar">
+      <div class="search-input-wrapper">
+        <fa-icon [icon]="faSearch" class="search-icon"></fa-icon>
+        <input 
+          pInputText 
+          formControlName="search" 
+          placeholder="Search for anything..." 
+          class="search-input"
+          (focus)="onSearchFocus()"
+        />
+        <button 
+          pButton 
+          type="button" 
+          class="filter-toggle-btn"
+          (click)="toggleAdvancedSearch()"
+          [class.active]="showAdvancedSearch"
+        >
+          <fa-icon [icon]="faFilter"></fa-icon>
+        </button>
+      </div>
     </div>
 
-    <div class="filter-section">
-      <p-checkbox formControlName="match"></p-checkbox>
-      <label class="match-label">Match</label>
-      <p-select formControlName="matchType" [options]="config.match" optionLabel="label" optionValue="value"></p-select>
-      <span>of the following rules:</span>
-    </div>
+    <div class="advanced-panel" *ngIf="showAdvancedSearch" [@slideDown]>
+      <div class="panel-header">
+        <h3>Advanced Search</h3>
+        <button pButton type="button" class="close-btn" (click)="closeAdvancedSearch()">
+          <fa-icon [icon]="faTimes"></fa-icon>
+        </button>
+      </div>
 
-    <div formArrayName="rules" class="rules">
+      <div class="filter-section">
+        <div class="match-controls">
+          <p-checkbox formControlName="match" binary="true"></p-checkbox>
+          <label class="match-label">Match</label>
+          <p-select 
+            formControlName="matchType" 
+            [options]="config.match" 
+            optionLabel="label" 
+            optionValue="value"
+            class="match-select"
+          ></p-select>
+          <span class="match-text">of the following rules:</span>
+        </div>
+      </div>
+
+      <div formArrayName="rules" class="rules-section">
         <div class="rule-row" *ngFor="let group of rules.controls; let i = index" [formGroupName]="i" [@ruleAnimation]>
-        <p-select formControlName="field" [options]="config.fields" optionLabel="label" optionValue="value">
-          <ng-template let-option pTemplate="selectedItem">
-            <fa-icon [icon]="option.icon"></fa-icon>
-            <span>{{ option.label }}</span>
-          </ng-template>
-          <ng-template let-option pTemplate="item">
-            <div class="field-option">
+          <div class="rule-content">
+            <p-select 
+              formControlName="field" 
+              [options]="config.fields" 
+              optionLabel="label" 
+              optionValue="value"
+              class="field-select"
+            >
+              <ng-template let-option pTemplate="selectedItem">
+                <div class="selected-field">
+                  <fa-icon [icon]="option.icon"></fa-icon>
+                  <span>{{ option.label }}</span>
+                </div>
+              </ng-template>
+              <ng-template let-option pTemplate="item">
+                <div class="field-option">
+                  <fa-icon [icon]="option.icon"></fa-icon>
+                  <span>{{ option.label }}</span>
+                </div>
+              </ng-template>
+            </p-select>
+            
+            <p-select
+              formControlName="operator"
+              [options]="config.operators"
+              optionLabel="label"
+              optionValue="value"
+              class="operator-select"
+            ></p-select>
+            
+            <input 
+              pInputText 
+              formControlName="value" 
+              placeholder="Enter value..."
+              class="value-input"
+            />
+          </div>
+          
+          <div class="rule-actions">
+            <button 
+              pButton 
+              type="button" 
+              class="action-btn add-btn" 
+              (click)="addRule(i + 1)"
+              pTooltip="Add rule"
+            >
+              <fa-icon [icon]="faPlus"></fa-icon>
+            </button>
+            <button 
+              pButton 
+              type="button" 
+              class="action-btn remove-btn" 
+              (click)="removeRule(i)" 
+              *ngIf="rules.length > 1"
+              pTooltip="Remove rule"
+            >
+              <fa-icon [icon]="faTrash"></fa-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="date-section" formGroupName="dateRange">
+        <label class="section-label">Date Range</label>
+        <div class="date-controls">
+          <p-select 
+            formControlName="type" 
+            [options]="config.dates" 
+            optionLabel="label" 
+            optionValue="value"
+            class="date-type-select"
+          ></p-select>
+          <div class="custom-dates" *ngIf="form.get('dateRange.type')?.value === 'custom'">
+            <p-datepicker 
+              formControlName="from" 
+              dateFormat="yy-mm-dd"
+              placeholder="From date"
+              class="date-picker"
+            ></p-datepicker>
+            <p-datepicker 
+              formControlName="to" 
+              dateFormat="yy-mm-dd"
+              placeholder="To date"
+              class="date-picker"
+            ></p-datepicker>
+          </div>
+        </div>
+      </div>
+
+      <div class="save-filter-section">
+        <div class="save-filter-control">
+          <p-checkbox formControlName="saveFilter" binary="true"></p-checkbox>
+          <label class="save-label">Save this filter for future use</label>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button 
+          pButton 
+          type="button" 
+          label="Clear All" 
+          class="secondary-btn" 
+          (click)="onCancel()"
+        ></button>
+        <button 
+          pButton 
+          type="button" 
+          label="Apply Filters" 
+          class="primary-btn" 
+          (click)="onApply()"
+        >
+          <fa-icon [icon]="faSearch"></fa-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
               <fa-icon [icon]="option.icon"></fa-icon>
               <span>{{ option.label }}</span>
             </div>

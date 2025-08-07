@@ -8,7 +8,7 @@ import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DatePickerModule } from 'primeng/datepicker';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faPlus, faTrash, faLocationDot, faFont } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faTrash, faLocationDot, faFont, faSearch, faFilter, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-advanced-search',
@@ -41,6 +41,15 @@ import { faPlus, faTrash, faLocationDot, faFont } from '@fortawesome/free-solid-
         transition(':leave', [
           animate('200ms ease-in', style({ opacity: 0, transform: 'translateY(5px)' }))
         ])
+      ]),
+      trigger('slideDown', [
+        transition(':enter', [
+          style({ height: '0', opacity: '0', overflow: 'hidden' }),
+          animate('300ms ease-out', style({ height: '*', opacity: '1' }))
+        ]),
+        transition(':leave', [
+          animate('300ms ease-in', style({ height: '0', opacity: '0' }))
+        ])
       ])
     ]
   })
@@ -52,6 +61,11 @@ import { faPlus, faTrash, faLocationDot, faFont } from '@fortawesome/free-solid-
   faTrash = faTrash;
   faLocationDot = faLocationDot;
   faFont = faFont;
+  faSearch = faSearch;
+  faFilter = faFilter;
+  faTimes = faTimes;
+
+  showAdvancedSearch = false;
 
   config = {
     fields: [
@@ -96,6 +110,18 @@ import { faPlus, faTrash, faLocationDot, faFont } from '@fortawesome/free-solid-
     return this.form.get('rules') as FormArray;
   }
 
+  onSearchFocus(): void {
+    this.showAdvancedSearch = true;
+  }
+
+  toggleAdvancedSearch(): void {
+    this.showAdvancedSearch = !this.showAdvancedSearch;
+  }
+
+  closeAdvancedSearch(): void {
+    this.showAdvancedSearch = false;
+  }
+
   addRule(index?: number): void {
     const group = this.fb.group({
       field: [this.config.fields[0].value],
@@ -138,6 +164,7 @@ import { faPlus, faTrash, faLocationDot, faFont } from '@fortawesome/free-solid-
     });
     this.rules.clear();
     this.addRule();
+    this.showAdvancedSearch = false;
     this.cancel.emit();
   }
 
