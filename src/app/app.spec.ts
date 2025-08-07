@@ -13,11 +13,11 @@ describe('App', () => {
     const app = fixture.componentInstance;
     expect(app).toBeTruthy();
   });
-
-  it('should render title', () => {
+  
+  it('should render advanced search component', () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, advanced-search');
+    expect(compiled.querySelector('app-advanced-search')).not.toBeNull();
   });
 });
