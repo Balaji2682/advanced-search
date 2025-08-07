@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { trigger, transition, style, animate } from '@angular/animations';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgFor, NgIf } from '@angular/common';
 import { SelectModule } from 'primeng/select';
@@ -13,9 +14,9 @@ import { faPlus, faTrash, faLocationDot, faFont } from '@fortawesome/free-solid-
   selector: 'app-advanced-search',
   standalone: true,
   imports: [
-    ReactiveFormsModule,
-    NgFor,
-    NgIf,
+      ReactiveFormsModule,
+      NgFor,
+      NgIf,
     SelectModule,
     InputTextModule,
     ButtonModule,
@@ -23,10 +24,27 @@ import { faPlus, faTrash, faLocationDot, faFont } from '@fortawesome/free-solid-
     DatePickerModule,
     FontAwesomeModule
   ],
-  templateUrl: './advanced-search.component.html',
-  styleUrl: './advanced-search.component.scss'
-})
-export class AdvancedSearchComponent {
+    templateUrl: './advanced-search.component.html',
+    styleUrl: './advanced-search.component.scss',
+    animations: [
+      trigger('cardAnimation', [
+        transition(':enter', [
+          style({ opacity: 0, transform: 'scale(0.95)' }),
+          animate('200ms ease-out', style({ opacity: 1, transform: 'scale(1)' }))
+        ])
+      ]),
+      trigger('ruleAnimation', [
+        transition(':enter', [
+          style({ opacity: 0, transform: 'translateY(-5px)' }),
+          animate('200ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
+        ]),
+        transition(':leave', [
+          animate('200ms ease-in', style({ opacity: 0, transform: 'translateY(5px)' }))
+        ])
+      ])
+    ]
+  })
+  export class AdvancedSearchComponent {
   @Output() apply = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<void>();
 

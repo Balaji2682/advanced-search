@@ -1,5 +1,5 @@
 <div class="wrapper">
-  <div class="card" [formGroup]="form">
+  <div class="card" [@cardAnimation] [formGroup]="form">
     <div class="top-section">
       <input pInputText formControlName="search" placeholder="Search" class="search-input" />
       <button pButton type="button" label="Advanced Search" class="advanced-btn"></button>
@@ -13,7 +13,7 @@
     </div>
 
     <div formArrayName="rules" class="rules">
-      <div class="rule-row" *ngFor="let group of rules.controls; let i = index" [formGroupName]="i">
+        <div class="rule-row" *ngFor="let group of rules.controls; let i = index" [formGroupName]="i" [@ruleAnimation]>
         <p-select formControlName="field" [options]="config.fields" optionLabel="label" optionValue="value">
           <ng-template let-option pTemplate="selectedItem">
             <fa-icon [icon]="option.icon"></fa-icon>

@@ -14,6 +14,12 @@
   padding: 1.5rem;
   width: 100%;
   max-width: 600px;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
 }
 
 .top-section {
@@ -41,6 +47,14 @@
   align-items: center;
   gap: 0.5rem;
   margin-top: 0.5rem;
+  padding: 0.25rem 0;
+  border-radius: 4px;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.rule-row:hover {
+  background-color: #f8f9fa;
+  transform: translateX(2px);
 }
 
 .rule-row p-select,
@@ -55,6 +69,22 @@
   align-items: center;
   justify-content: center;
   padding: 0;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.icon-btn:hover {
+  transform: scale(1.1);
+}
+
+.advanced-btn {
+  background: linear-gradient(135deg, #6a5acd, #00bfff);
+  border: none;
+  color: #fff;
+  transition: filter 0.3s ease;
+}
+
+.advanced-btn:hover {
+  filter: brightness(1.1);
 }
 
 .date-section {
